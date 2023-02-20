@@ -6,7 +6,10 @@
 import scrapy
 
 
-class JxItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+class JobItem(scrapy.Item):
+    title = scrapy.Field()
+    source = scrapy.Field()
+    company = scrapy.Field()
+    location = scrapy.Field()
+    last_date = scrapy.Field()
+    image_urls = scrapy.Field()
