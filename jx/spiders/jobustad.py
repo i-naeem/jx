@@ -1,11 +1,11 @@
-from jx.items import JobItem
+from jx.items import JobItem, JobItemLoader
 from datetime import date
 import scrapy
 
 
 SELECTORS = {
-    "title": '//td[contains(., "Hiring Organization")]//following-sibling::td//text()',
-    "company": '//td[contains(., "Jobs Location")]//following-sibling::td//text()',
+    "company": '//td[contains(., "Hiring Organization")]//following-sibling::td//text()',
+    "location": '//td[contains(., "Jobs Location")]//following-sibling::td//text()',
     "deadline": '//td[contains(., "Valid Through")]//following-sibling::td//text()',
 }
 
@@ -29,10 +29,11 @@ class JobustadSpider(scrapy.Spider):
             yield response.follow(url=next_page, callback=self.parse)
 
     def parse_post(self, response):
-        item = JobItem()
-        item['source'] = response.url
-        item['title'] = response.xpath(SELECTORS.get('title')).get()
-        item['company'] = response.xpath(SELECTORS.get('company')).get()
-        item['deadline'] = response.xpath(SELECTORS.get('deadline')).get()
+        loader = JobItemLoader(item=JobItem(), response=response)
 
-        return item
+        loader.add_value('source', response.url)
+        loader.add_xpath('company', SELECTORS.get('company'))
+        loader.add_xpath('location', SELECTORS.get('location'))
+        loader.add_xpath('deadline', SELECTORS.get('deadline'))
+
+        return loader.load_item()

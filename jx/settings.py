@@ -64,7 +64,8 @@ ROBOTSTXT_OBEY = True
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     # "jx.pipelines.JxPipeline": 300,
-    'scrapy.pipelines.images.ImagesPipeline': 1
+    'jx.pipelines.CompanyFilterPipeline': 1,
+    'scrapy.pipelines.images.ImagesPipeline': 2,
 }
 
 IMAGE_STORE = "./images/"
